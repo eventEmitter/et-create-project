@@ -1,0 +1,18 @@
+Source: et-create-project
+Section: devel
+Priority: extra
+Maintainer: Michael van der Weg <michael@vanderweg.ch>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+Homepage: http://eventemitter.com/
+Vcs-Git: git://git@github.com:eventEmitter/et-create-project.git
+Vcs-Browser: http://github.com/eventEmitter/et-create-project.git
+
+Package: et-create-project
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: application for creating empty git project directories
+ Helper tool for creating empty project directories. The application will 
+ initialize a project directory with a gitignore, readme and a licence file. 
+ You may optionally specify if the project will be an npm project ( --npm ) or 
+ a dep ( --deb ) project which will add specific files. 

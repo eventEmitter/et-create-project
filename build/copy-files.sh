@@ -1,4 +1,4 @@
-
+#!bin/bash
 
 # copy project files
 cp -R lib/* "$PACKAGEDIR"

@@ -1,0 +1,2 @@
+et-create-project.sh usr/bin
+files/* usr/share/et-create-project/
