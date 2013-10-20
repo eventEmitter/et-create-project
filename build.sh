@@ -1,5 +1,6 @@
 #!/bin/bash
 
+PACKAGENAME=${PWD##*/}
 VERSION=$(git describe)
 
 # need the current git tag
@@ -15,16 +16,25 @@ if [ ! -d "build" ]; then
 fi
 
 # path to package build dir
-PACKAGE="build/$VERSION"
+PACKAGE="build/$PACKAGENAME-$VERSION"
 
-echo $PACKAGE
-echo $VERSION
 
-# create the build dir if it not already exists
-if [ -d "$PACKAGE" ]; then
-	echo "package $VERSION was already created. remove the existing package or create a new git version using the git tag command!"
+# the target build dir must not exist
+if [ ! -d "$PACKAGE" ]; then
+	echo "package «$PACKAGE» was already created. remove the existing package or create a new git version using the git tag command!"
 	exit 11
 fi
 
+#create package dir
+#mkdir "$PACKAGE"
 
-echo $VERSION
+# copy project files
+cp -R lib/* "$PACKAGE"
+
+if [ -d "files" ]; then
+	cp -R files "$PACKAGE"
+fi
+
+
+
+echo $PACKAGE
