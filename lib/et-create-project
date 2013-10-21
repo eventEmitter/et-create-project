@@ -66,6 +66,8 @@ echo "copying files ..."
 cp "$SOURCEDIR/README.md" ./README.md
 cp "$SOURCEDIR/gitignore" ./gitignore
 
+sed -i "s/project-name/$PROJECTNAME/g" ./README.md
+
 
 
 
@@ -96,9 +98,9 @@ if [ "$1" == "--deb" ] || [ "$2" == "--deb" ]; then
 	mkdir build
 	cp -R $SOURCEDIR/deb/* ./build
 
-	#sed -i "s/user-name/$NAME/g" ./build/build-vars.sh
-	#sed -i "s/user-email/$EMAIL/g" ./build/build-vars.sh
-	#sed -i "s/user-website/$WEBSITE/g" ./build/build-vars.sh
+	sed -i "s/user-name/$NAME/g" ./build/build-vars.sh
+	sed -i "s/user-email/$EMAIL/g" ./build/build-vars.sh
+	sed -i "s/user-website/$WEBSITE/g" ./build/build-vars.sh
 
 	sed -i "s/project-name/$PROJECTNAME/g" ./build/debian/changelog
 	sed -i "s/user-email/$EMAIL/g" ./build/debian/changelog
