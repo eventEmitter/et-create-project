@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SOURCEDIR="/home/em/dev/ee/et-create-project/files"
+SOURCEDIR="/user/share/et-create-project"
 
 # get user data
 getUserInput () {
