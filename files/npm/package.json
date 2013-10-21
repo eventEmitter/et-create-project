@@ -1,0 +1,29 @@
+{
+      "name"                        : "my-package-name"
+    , "description"                 : "package decription"
+    , "version"                     : "0.1.0"
+    , "homepage"                    : "https://github.com/github-user/my-package-name"
+    , "author"                      : "user-name <user-email> (http://user-website/)" 
+    , "licence"                     : "mit"
+    , "os"                          : "linux"
+    , "repository": {
+          "url"                     : "https://github.com/github-user/my-package-name.git"
+        , "type"                    : "git"
+    }
+    , "engines": {
+        "node"                      : ">=v0.10.17"
+    }
+    , "bugs": {
+        "url"                       : "https://github.com/github-user/my-package-name/issues"
+    }
+    , "dependencies": {
+          "ee-class"                : "*"
+        , "ee-event-emitter"        : "*"
+        , "ee-types"                : "*"
+        , "ee-log"                  : "*"
+        , "ee-project"              : "*"
+    }
+    , "devDependencies": {}
+    , "optionalDependencies": {}
+    , "private"                     : true
+}

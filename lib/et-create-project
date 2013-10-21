@@ -1,0 +1,119 @@
+#!/bin/bash
+
+SOURCEDIR="/home/em/dev/ee/et-create-project/files"
+
+# get user data
+getUserInput () {
+	echo "Please enter your full name"
+	read NAME
+	echo "Please enter your email address"
+	read EMAIL
+	echo "Please enter your GitHub username ( case sensitive )"
+	read GITHUB
+	echo "Please enter your websites address ( example.com ) "
+	read WEBSITE
+
+	echo "-----------------"
+	echo "Please review your input. You may change it by editing the «~/.et-rc» file."
+	echo "Name: $NAME"
+	echo "Email: $EMAIL"
+	echo "Github username: $GITHUB"
+	echo "Website: http://$WEBSITE/"
+	echo "-----------------"
+	echo "Is your input correct? [Yn]"
+	read OK
+
+	if [ "$OK" != "y" ]; then
+		getUserInput
+	fi
+}
+
+
+if [ ! -f ~/.et-rc ]; then
+	getUserInput
+
+	#cp /usr/share/et-create-project/et-rc ~/.et-rc
+	cp "$SOURCEDIR/et-rc" ~/.et-rc
+
+	sed -i "s/NAME=/NAME='$NAME'/g" ~/.et-rc
+	sed -i "s/EMAIL=/EMAIL='$EMAIL'/g" ~/.et-rc
+	sed -i "s/GITHUB=/GITHUB='$GITHUB'/g" ~/.et-rc
+	sed -i "s/WEBSITE=/WEBSITE='$WEBSITE'/g" ~/.et-rc
+fi
+
+# source the rc file
+. ~/.et-rc
+
+
+# try to get the project name
+DIRNAME=${PWD##*/}
+#$(echo "${PWD##*/}" | sed "s/e[a-z]-//g" | sed -E "s/(^|-)([a-z])/\u\2/g" | sed -e 's/./\L&/')
+
+echo "Enter the projectname, default «$DIRNAME»"
+read PROJECTNAME
+
+if [[ -z $PROJECTNAME ]]; then
+	PROJECTNAME=$DIRNAME
+fi
+
+PROJECTNAMECC=$(echo "$PROJECTNAME" | sed -E "s/(^|-)([a-z])/\u\2/g" )
+
+echo "creating directories ..."
+mkdir lib
+
+
+echo "copying files ..."
+cp "$SOURCEDIR/README.md" ./README.md
+cp "$SOURCEDIR/gitignore" ./gitignore
+
+
+
+
+# npm specific
+if [ "$1" == "--npm" ] || [ "$2" == "--npm" ]; then
+	cp -R $SOURCEDIR/npm/* ./
+
+	echo "updating package.json"
+	sed -i "s/my-package-name/$PROJECTNAME/g" ./package.json
+	sed -i "s/github-user/$GITHUB/g" ./package.json
+	sed -i "s/user-name/$NAME/g" ./package.json
+	sed -i "s/user-email/$EMAIL/g" ./package.json
+	sed -i "s/user-website/$WEBSITE/g" ./package.json
+	
+	sed -i "s/projectName/$PROJECTNAMECC/g" ./index.js
+
+	PROJECTFILEPATH="./lib/$PROJECTNAMECC.js"
+	mv ./defaultclass.js $PROJECTFILEPATH
+
+	sed -i "s/projectName/$PROJECTNAMECC/g" $PROJECTFILEPATH	
+fi
+
+
+
+
+# deb specific
+if [ "$1" == "--deb" ] || [ "$2" == "--deb" ]; then
+	mkdir build
+	cp -R $SOURCEDIR/deb/* ./build
+
+	#sed -i "s/user-name/$NAME/g" ./build/build-vars.sh
+	#sed -i "s/user-email/$EMAIL/g" ./build/build-vars.sh
+	#sed -i "s/user-website/$WEBSITE/g" ./build/build-vars.sh
+
+	sed -i "s/project-name/$PROJECTNAME/g" ./build/debian/changelog
+	sed -i "s/user-email/$EMAIL/g" ./build/debian/changelog
+	sed -i "s/user-name/$NAME/g" ./build/debian/changelog
+
+	sed -i "s/user-email/$EMAIL/g" ./build/debian/copyright
+	sed -i "s/user-name/$NAME/g" ./build/debian/copyright
+
+	sed -i "s/user-email/$EMAIL/g" ./build/debian/control
+	sed -i "s/user-website/$WEBSITE/g" ./build/debian/control
+	sed -i "s/user-name/$NAME/g" ./build/debian/control
+	sed -i "s/user-github/$GITHUB/g" ./build/debian/control
+	sed -i "s/project-name/$PROJECTNAME/g" ./build/debian/control
+
+
+	# move install template
+	mv ./build/debian/template.install "./build/debian/$PROJECTNAME.install"
+fi
