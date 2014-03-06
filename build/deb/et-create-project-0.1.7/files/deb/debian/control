@@ -1,0 +1,16 @@
+Source: project-name
+Section: devel
+Priority: extra
+Maintainer: user-name <user-email>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+Homepage: http://user-website/
+Vcs-Git: git://git@github.com:user-github/project-name.git
+Vcs-Browser: http://github.com/user-github/project-name.git
+
+Package: project-name
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: description ( max 60 chars )
+ long description, max 80 charachters per line, indented by 
+ 1 space character

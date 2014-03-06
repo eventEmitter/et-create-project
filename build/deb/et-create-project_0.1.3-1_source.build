@@ -1,22 +1,24 @@
- dpkg-buildpackage -rfakeroot -d -us -uc -S -sa
+ dpkg-buildpackage -rfakeroot -d -us -uc -S -sd
 dpkg-buildpackage: source package et-create-project
 dpkg-buildpackage: source version 0.1.3-1
 dpkg-buildpackage: source changed by Michael van der Weg <michael@vanderweg.ch>
- dpkg-source --before-build et-create-project-0.1.3
+ dpkg-source --before-build et-create-project-0.1.7
  fakeroot debian/rules clean
 dh clean
    dh_testdir
    dh_auto_clean
    dh_clean
- dpkg-source -b et-create-project-0.1.3
+ dpkg-source -b et-create-project-0.1.7
 dpkg-source: info: using source format `3.0 (quilt)'
 dpkg-source: info: building et-create-project using existing ./et-create-project_0.1.3.orig.tar.gz
+dpkg-source: warning: ignoring deletion of file et-create-project.sh
 dpkg-source: info: building et-create-project in et-create-project_0.1.3-1.debian.tar.gz
 dpkg-source: info: building et-create-project in et-create-project_0.1.3-1.dsc
- dpkg-genchanges -S -sa >../et-create-project_0.1.3-1_source.changes
-dpkg-genchanges: including full source code in upload
- dpkg-source --after-build et-create-project-0.1.3
-dpkg-buildpackage: full upload (original source is included)
+ dpkg-genchanges -S -sd >../et-create-project_0.1.3-1_source.changes
+dpkg-genchanges: warning: the current version (0.1.3-1) is earlier than the previous one (0.1.7-1)
+dpkg-genchanges: not including original source code in upload
+ dpkg-source --after-build et-create-project-0.1.7
+dpkg-buildpackage: binary and diff upload (original source NOT included)
 Now running lintian...
 Finished running lintian.
 Now signing changes and any dsc files...

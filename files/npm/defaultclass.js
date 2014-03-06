@@ -1,14 +1,15 @@
+!function(){
+
+	var   Class 		= require('ee-class')
+		, log 			= require('ee-log');
 
 
-	var   Class 		= require( "ee-class" )
-		, log 			= require( "ee-log" );
 
+	module.exports = new Class({
 
-
-	module.exports = new Class( {
-
-		init: function( options ){
+		init: function(options) {
 
 		}
 
-	} );
+	});
+}();

@@ -1,11 +1,11 @@
 {
       "name"                        : "my-package-name"
-    , "description"                 : "package description"
+    , "description"                 : "package decription"
     , "version"                     : "0.1.0"
     , "homepage"                    : "https://github.com/github-user/my-package-name"
     , "author"                      : "user-name <user-email> (http://user-website/)" 
     , "licence"                     : "mit"
-    , "os"                          : "!win"
+    , "os"                          : "linux"
     , "repository": {
           "url"                     : "https://github.com/github-user/my-package-name.git"
         , "type"                    : "git"
@@ -17,20 +17,13 @@
         "url"                       : "https://github.com/github-user/my-package-name/issues"
     }
     , "dependencies": {
-          "ee-class"                : "0.2.x"
-        , "ee-event-emitter"        : "0.1.x"
-        , "ee-types"                : "0.1.x"
-        , "ee-log"                  : "0.2.x"
-        , "ee-project"              : "0.2.x"
+          "ee-class"                : "*"
+        , "ee-event-emitter"        : "*"
+        , "ee-types"                : "*"
+        , "ee-log"                  : "*"
+        , "ee-project"              : "*"
     }
-    , "devDependencies": {
-          "mocha"                   : "1.17.x"
-        , "ee-travis"               : "0.1.x"
-    }
+    , "devDependencies": {}
     , "optionalDependencies": {}
-    , "keywords"                    : []
     , "private"                     : true
-    , "scripts": {
-        "test"                      : "./node_modules/mocha/bin/mocha --reporter spec"
-    }
 }

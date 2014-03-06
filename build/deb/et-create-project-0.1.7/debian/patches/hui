@@ -1,0 +1,386 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ et-create-project (0.1.3-1) saucy; urgency=low
+ .
+   * Initial release
+Author: Michael van der Weg <michael@vanderweg.ch>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- /dev/null
++++ et-create-project-0.1.3/et-create-project
+@@ -0,0 +1,121 @@
++#!/bin/bash
++
++SOURCEDIR="/user/share/et-create-project"
++
++# get user data
++getUserInput () {
++	echo "Please enter your full name"
++	read NAME
++	echo "Please enter your email address"
++	read EMAIL
++	echo "Please enter your GitHub username ( case sensitive )"
++	read GITHUB
++	echo "Please enter your websites address ( example.com ) "
++	read WEBSITE
++
++	echo "-----------------"
++	echo "Please review your input. You may change it by editing the «~/.et-rc» file."
++	echo "Name: $NAME"
++	echo "Email: $EMAIL"
++	echo "Github username: $GITHUB"
++	echo "Website: http://$WEBSITE/"
++	echo "-----------------"
++	echo "Is your input correct? [Yn]"
++	read OK
++
++	if [ "$OK" != "y" ]; then
++		getUserInput
++	fi
++}
++
++
++if [ ! -f ~/.et-rc ]; then
++	getUserInput
++
++	#cp /usr/share/et-create-project/et-rc ~/.et-rc
++	cp "$SOURCEDIR/et-rc" ~/.et-rc
++
++	sed -i "s/NAME=/NAME='$NAME'/g" ~/.et-rc
++	sed -i "s/EMAIL=/EMAIL='$EMAIL'/g" ~/.et-rc
++	sed -i "s/GITHUB=/GITHUB='$GITHUB'/g" ~/.et-rc
++	sed -i "s/WEBSITE=/WEBSITE='$WEBSITE'/g" ~/.et-rc
++fi
++
++# source the rc file
++. ~/.et-rc
++
++
++# try to get the project name
++DIRNAME=${PWD##*/}
++#$(echo "${PWD##*/}" | sed "s/e[a-z]-//g" | sed -E "s/(^|-)([a-z])/\u\2/g" | sed -e 's/./\L&/')
++
++echo "Enter the projectname, default «$DIRNAME»"
++read PROJECTNAME
++
++if [[ -z $PROJECTNAME ]]; then
++	PROJECTNAME=$DIRNAME
++fi
++
++PROJECTNAMECC=$(echo "$PROJECTNAME" | sed -E "s/(^|-)([a-z])/\u\2/g" )
++
++echo "creating directories ..."
++mkdir lib
++
++
++echo "copying files ..."
++cp "$SOURCEDIR/README.md" ./README.md
++cp "$SOURCEDIR/gitignore" ./gitignore
++
++sed -i "s/project-name/$PROJECTNAME/g" ./README.md
++
++
++
++
++# npm specific
++if [ "$1" == "--npm" ] || [ "$2" == "--npm" ]; then
++	cp -R $SOURCEDIR/npm/* ./
++
++	echo "updating package.json"
++	sed -i "s/my-package-name/$PROJECTNAME/g" ./package.json
++	sed -i "s/github-user/$GITHUB/g" ./package.json
++	sed -i "s/user-name/$NAME/g" ./package.json
++	sed -i "s/user-email/$EMAIL/g" ./package.json
++	sed -i "s/user-website/$WEBSITE/g" ./package.json
++	
++	sed -i "s/projectName/$PROJECTNAMECC/g" ./index.js
++
++	PROJECTFILEPATH="./lib/$PROJECTNAMECC.js"
++	mv ./defaultclass.js $PROJECTFILEPATH
++
++	sed -i "s/projectName/$PROJECTNAMECC/g" $PROJECTFILEPATH	
++fi
++
++
++
++
++# deb specific
++if [ "$1" == "--deb" ] || [ "$2" == "--deb" ]; then
++	mkdir build
++	cp -R $SOURCEDIR/deb/* ./build
++
++	sed -i "s/user-name/$NAME/g" ./build/build-vars.sh
++	sed -i "s/user-email/$EMAIL/g" ./build/build-vars.sh
++	sed -i "s/user-website/$WEBSITE/g" ./build/build-vars.sh
++
++	sed -i "s/project-name/$PROJECTNAME/g" ./build/debian/changelog
++	sed -i "s/user-email/$EMAIL/g" ./build/debian/changelog
++	sed -i "s/user-name/$NAME/g" ./build/debian/changelog
++
++	sed -i "s/user-email/$EMAIL/g" ./build/debian/copyright
++	sed -i "s/user-name/$NAME/g" ./build/debian/copyright
++
++	sed -i "s/user-email/$EMAIL/g" ./build/debian/control
++	sed -i "s/user-website/$WEBSITE/g" ./build/debian/control
++	sed -i "s/user-name/$NAME/g" ./build/debian/control
++	sed -i "s/user-github/$GITHUB/g" ./build/debian/control
++	sed -i "s/project-name/$PROJECTNAME/g" ./build/debian/control
++
++
++	# move install template
++	mv ./build/debian/template.install "./build/debian/$PROJECTNAME.install"
++fi
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/LICENCE
+@@ -0,0 +1,16 @@
++Copyright (C) 2013 Michael van der Weg
++
++Permission is hereby granted, free of charge, to any person obtaining a copy of this software
++and associated documentation files (the "Software"), to deal in the Software without restriction, 
++including without limitation the rights to use, copy, modify, merge, publish, distribute, 
++sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is 
++furnished to do so, subject to the following conditions:
++
++The above copyright notice and this permission notice shall be included in all copies or 
++substantial portions of the Software.
++
++THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT 
++NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
++NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
++DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
++OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/README.md
+@@ -0,0 +1,8 @@
++# project-name
++
++description
++
++## installation
++
++
++## usage
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/et-rc
+@@ -0,0 +1,6 @@
++#!bin/bash
++
++NAME=
++EMAIL=
++GITHUB=
++WEBSITE=
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/deb/copy-files.sh
+@@ -0,0 +1,8 @@
++#!bin/bash
++
++# copy project files
++cp -R lib/* "$PACKAGEDIR"
++
++if [ -d "files" ]; then
++	cp -R files "$PACKAGEDIR"
++fi
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/deb/build-vars.sh
+@@ -0,0 +1,21 @@
++#!bin/bash
++
++# personal information
++NAME="user-name"
++EMAIL="user-email"
++HOMEPAGE="user-website"
++
++
++# control file values
++
++# possible licences: apache artistic bsd gpl gpl2 gpl3 lgpl lgpl2 lgpl3 mit
++LICENCE="mit" 
++
++# possible sections: admin, cli-mono, comm, database, debug, devel, doc, editors, 
++# 				   	 education, electronics, embedded, fonts, games, gnome, gnu-r, 
++# 				   	 gnustep, graphics, hamradio, haskell, httpd, interpreters, 
++# 				   	 introspection, java, kde, kernel, libdevel, libs, lisp, 
++# 				   	 localization, mail, math, metapackages, misc, net, news, ocaml, 
++# 				   	 oldlibs, otherosfs, perl, php, python, ruby, science, shells, 
++# 				   	 sound, tasks, tex, text, utils, vcs, video, web, x11, xfce, zope
++SECTION="devel"
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/deb/debian/template.install
+@@ -0,0 +1,2 @@
++#et-create-project.sh usr/bin
++#files/* usr/share/et-create-project/
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/deb/debian/control
+@@ -0,0 +1,16 @@
++Source: project-name
++Section: devel
++Priority: extra
++Maintainer: user-name <user-email>
++Build-Depends: debhelper (>= 8.0.0)
++Standards-Version: 3.9.4
++Homepage: http://user-website/
++Vcs-Git: git://git@github.com:user-github/project-name.git
++Vcs-Browser: http://github.com/user-github/project-name.git
++
++Package: project-name
++Architecture: any
++Depends: ${shlibs:Depends}, ${misc:Depends}
++Description: description ( max 60 chars )
++ long description, max 80 charachters per line, indented by 
++ 1 space character
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/deb/debian/rules
+@@ -0,0 +1,13 @@
++#!/usr/bin/make -f
++# -*- makefile -*-
++# Sample debian/rules that uses debhelper.
++# This file was originally written by Joey Hess and Craig Small.
++# As a special exception, when this file is copied by dh-make into a
++# dh-make output file, you may use that output file without restriction.
++# This special exception was added by Craig Small in version 0.37 of dh-make.
++
++# Uncomment this to turn on verbose mode.
++#export DH_VERBOSE=1
++
++%:
++	dh $@
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/deb/debian/copyright
+@@ -0,0 +1,30 @@
++Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
++
++Files: *
++Copyright: 2013 user-name <user-email>
++License: MIT
++
++
++License: MIT
++ Permission is hereby granted, free of charge, to any person obtaining a
++ copy of this software and associated documentation files (the "Software"),
++ to deal in the Software without restriction, including without limitation
++ the rights to use, copy, modify, merge, publish, distribute, sublicense,
++ and/or sell copies of the Software, and to permit persons to whom the
++ Software is furnished to do so, subject to the following conditions:
++ .
++ The above copyright notice and this permission notice shall be included
++ in all copies or substantial portions of the Software.
++ .
++ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
++ OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
++ CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
++ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
++ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++
++# Please also look if there are files or directories which have a
++# different copyright/license attached and list them here.
++# Please avoid to pick license terms that are more restrictive than the
++# packaged work, as it may make Debian's contributions unacceptable upstream.
+--- /dev/null
++++ et-create-project-0.1.3/files/deb/debian/changelog
+@@ -0,0 +1,5 @@
++project-name (0.1.3-1) saucy; urgency=low
++
++  * Initial release
++
++ -- user-name <user-email>  Sun, 20 Oct 2013 18:06:41 +0200
+--- /dev/null
++++ et-create-project-0.1.3/files/npm/test.js
+@@ -0,0 +1,10 @@
++
++
++
++	var   Class 		= require( "ee-class" )
++		, log 			= require( "ee-log" )
++		, assert 		= require( "assert" );
++
++
++
++	var MyClass 		= require( "./" );
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/npm/index.js
+@@ -0,0 +1,4 @@
++
++
++
++	module.exports = require( "./lib/projectName" );
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/npm/package.json
+@@ -0,0 +1,29 @@
++{
++      "name"                        : "my-package-name"
++    , "description"                 : "package decription"
++    , "version"                     : "0.1.0"
++    , "homepage"                    : "https://github.com/github-user/my-package-name"
++    , "author"                      : "user-name <user-email> (http://user-website/)" 
++    , "licence"                     : "mit"
++    , "os"                          : "linux"
++    , "repository": {
++          "url"                     : "https://github.com/github-user/my-package-name.git"
++        , "type"                    : "git"
++    }
++    , "engines": {
++        "node"                      : ">=v0.10.17"
++    }
++    , "bugs": {
++        "url"                       : "https://github.com/github-user/my-package-name/issues"
++    }
++    , "dependencies": {
++          "ee-class"                : "*"
++        , "ee-event-emitter"        : "*"
++        , "ee-types"                : "*"
++        , "ee-log"                  : "*"
++        , "ee-project"              : "*"
++    }
++    , "devDependencies": {}
++    , "optionalDependencies": {}
++    , "private"                     : true
++}
+\ No newline at end of file
+--- /dev/null
++++ et-create-project-0.1.3/files/npm/defaultclass.js
+@@ -0,0 +1,14 @@
++
++
++	var   Class 		= require( "ee-class" )
++		, log 			= require( "ee-log" );
++
++
++
++	module.exports = new Class( {
++
++		init: function( options ){
++
++		}
++
++	} );
+\ No newline at end of file

@@ -1,4 +1,4 @@
 
 
 
-	module.exports = require( "./lib/projectName" );
+	module.exports = require('./lib/projectName');

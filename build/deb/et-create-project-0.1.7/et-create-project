@@ -1,7 +1,6 @@
 #!/bin/bash
 
 SOURCEDIR="/user/share/et-create-project"
-SOURCEDIR="/home/em/dev/ee/et-create-project/files"
 
 # get user data
 getUserInput () {
@@ -65,9 +64,7 @@ mkdir lib
 
 echo "copying files ..."
 cp "$SOURCEDIR/README.md" ./README.md
-cp "$SOURCEDIR/LICENCE" ./LICENCE
-cp "$SOURCEDIR/gitignore" ./.gitignore
-cp "$SOURCEDIR/travis.yml" ./.travis.yml
+cp "$SOURCEDIR/gitignore" ./gitignore
 
 sed -i "s/project-name/$PROJECTNAME/g" ./README.md
 
@@ -91,9 +88,6 @@ if [ "$1" == "--npm" ] || [ "$2" == "--npm" ]; then
 	mv ./defaultclass.js $PROJECTFILEPATH
 
 	sed -i "s/projectName/$PROJECTNAMECC/g" $PROJECTFILEPATH	
-
-	mkdir test
-	mv ./test-template.js ./test/default.js
 fi
 
 
