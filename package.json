@@ -1,19 +1,19 @@
 {
-      "name"                        : "my-package-name"
+      "name"                        : "et-create-project"
     , "description"                 : "package description"
     , "version"                     : "0.1.0"
-    , "homepage"                    : "https://github.com/github-user/my-package-name"
-    , "author"                      : "user-name <user-email> (http://user-website/)"
-    , "licence"                     : "MIT"
+    , "homepage"                    : "https://github.com/eventEmitter/et-create-project"
+    , "author"                      : "Michael van der Weg <michael@eventemitter.com> (http://eventemitter.com/)" 
+    , "licence"                     : "mit"
     , "repository": {
-          "url"                     : "https://github.com/github-user/my-package-name.git"
+          "url"                     : "https://github.com/eventEmitter/et-create-project.git"
         , "type"                    : "git"
     }
     , "engines": {
         "node"                      : ">=v0.10.17"
     }
     , "bugs": {
-        "url"                       : "https://github.com/github-user/my-package-name/issues"
+        "url"                       : "https://github.com/eventEmitter/et-create-project/issues"
     }
     , "dependencies": {
           "ee-class"                : "1.0.x"
@@ -23,6 +23,7 @@
     }
     , "devDependencies": {
           "mocha"                   : "1.17.x"
+        , "ee-travis"               : "0.1.x"
     }
     , "optionalDependencies": {}
     , "keywords"                    : []

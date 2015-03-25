@@ -13,6 +13,7 @@ results
 
 npm-debug.log
 
+travis.js
+
 node_modules
 config.js
-travis.js
