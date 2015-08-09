@@ -4,22 +4,22 @@
     , "version"                     : "0.1.0"
     , "homepage"                    : "https://github.com/github-user/my-package-name"
     , "author"                      : "user-name <user-email> (http://user-website/)"
-    , "licence"                     : "MIT"
+    , "license"                     : "MIT"
     , "repository": {
           "url"                     : "https://github.com/github-user/my-package-name.git"
         , "type"                    : "git"
     }
     , "engines": {
-        "node"                      : ">=v0.10.17"
+        "node"                      : ">=v0.12.0"
     }
     , "bugs": {
         "url"                       : "https://github.com/github-user/my-package-name/issues"
     }
     , "dependencies": {
-          "ee-class"                : "1.0.x"
-        , "ee-event-emitter"        : "0.1.x"
-        , "ee-types"                : "0.1.x"
+          "ee-class"                : "1.x"
+        , "ee-types"                : "1.x"
         , "ee-log"                  : "0.3.x"
+        , "ee-event-emitter"        : "0.3.x"
     }
     , "devDependencies": {
           "mocha"                   : "1.17.x"

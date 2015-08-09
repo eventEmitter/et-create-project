@@ -68,6 +68,7 @@ cp "$SOURCEDIR/README.md" ./README.md
 cp "$SOURCEDIR/LICENCE" ./LICENCE
 cp "$SOURCEDIR/gitignore" ./.gitignore
 cp "$SOURCEDIR/travis.yml" ./.travis.yml
+cp "$SOURCEDIR/jshintrc" ./.jshintrc
 
 sed -i "s/project-name/$PROJECTNAME/g" ./README.md
 
@@ -84,13 +85,13 @@ if [ "$1" == "--npm" ] || [ "$2" == "--npm" ]; then
 	sed -i "s/user-name/$NAME/g" ./package.json
 	sed -i "s/user-email/$EMAIL/g" ./package.json
 	sed -i "s/user-website/$WEBSITE/g" ./package.json
-	
+
 	sed -i "s/projectName/$PROJECTNAMECC/g" ./index.js
 
 	PROJECTFILEPATH="./lib/$PROJECTNAMECC.js"
 	mv ./defaultclass.js $PROJECTFILEPATH
 
-	sed -i "s/projectName/$PROJECTNAMECC/g" $PROJECTFILEPATH	
+	sed -i "s/projectName/$PROJECTNAMECC/g" $PROJECTFILEPATH
 
 	mkdir test
 	mv ./test-template.js ./test/default.js

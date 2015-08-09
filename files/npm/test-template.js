@@ -1,5 +1,5 @@
 
-	
+
 	var   Class 		= require('ee-class')
 		, log 			= require('ee-log')
 		, assert 		= require('assert');
@@ -13,6 +13,5 @@
 	describe('Something', function(){
 		it('should', function(){
 
-		});		
+		});
 	});
-	
