@@ -65,7 +65,7 @@ mkdir lib
 
 echo "copying files ..."
 cp "$SOURCEDIR/README.md" ./README.md
-cp "$SOURCEDIR/LICENCE" ./LICENCE
+cp "$SOURCEDIR/LICENSE" ./LICENSE
 cp "$SOURCEDIR/gitignore" ./.gitignore
 cp "$SOURCEDIR/travis.yml" ./.travis.yml
 cp "$SOURCEDIR/jshintrc" ./.jshintrc

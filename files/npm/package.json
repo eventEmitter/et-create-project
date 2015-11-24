@@ -10,7 +10,7 @@
         , "type"                    : "git"
     }
     , "engines": {
-        "node"                      : ">=v0.12.0"
+        "node"                      : ">=v4.1"
     }
     , "bugs": {
         "url"                       : "https://github.com/github-user/my-package-name/issues"
@@ -22,7 +22,7 @@
         , "ee-event-emitter"        : "0.3.x"
     }
     , "devDependencies": {
-          "mocha"                   : "1.17.x"
+          "mocha"                   : "2.x"
     }
     , "optionalDependencies": {}
     , "keywords"                    : []
