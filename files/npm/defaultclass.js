@@ -1,18 +1,19 @@
 (function() {
-	'use strict';
+    'use strict';
 
-	var   Class 		= require('ee-class')
-        , type          = require('ee-types')
-        , EventEmitter  = require('ee-event-emitter')
-		, log 			= require('ee-log');
+    let Class = require('ee-class');
+    let type = require('ee-types');
+    let EventEmitter = require('ee-event-emitter');
+    let log = require('ee-log');
 
 
 
-	module.exports = new Class({
 
-		init: function(options) {
+    
 
-		}
-
-	});
+    module.exports = new Class({
+        init: function(options) {
+            
+        }
+    });
 })();
